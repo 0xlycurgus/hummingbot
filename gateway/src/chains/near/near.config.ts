@@ -16,11 +16,11 @@ export interface Config {
   rpcAPIKey: string | undefined;
 }
 
-export namespace SolanaConfig {
-  export const config: Config = getSolanaConfig('solana');
+export namespace NearConfig {
+  export const config: Config = getNearConfig('solana');
 }
 
-export function getSolanaConfig(chainName: string): Config {
+export function getNearConfig(chainName: string): Config {
   const configManager = ConfigManagerV2.getInstance();
   const network = ConfigManagerV2.getInstance().get(chainName + '.network');
   return {

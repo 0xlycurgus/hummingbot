@@ -1,5 +1,5 @@
 import { logger } from '../../services/logger';
-import { SolanaConfig } from './near.config';
+import { NearConfig } from './near.config';
 import { countDecimals, TokenValue, walletPath } from '../../services/base';
 import NodeCache from 'node-cache';
 import bs58 from 'bs58';
@@ -27,7 +27,7 @@ import fse from 'fs-extra';
 import { ConfigManagerCertPassphrase } from '../../services/config-manager-cert-passphrase';
 const crypto = require('crypto').webcrypto;
 
-export type Solanaish = Near;
+export type Nearish = Near;
 
 export class Near {
   public rpcUrl;
@@ -54,9 +54,9 @@ export class Near {
   private _initPromise: Promise<void> = Promise.resolve();
 
   constructor() {
-    this._cluster = SolanaConfig.config.network.slug;
+    this._cluster = NearConfig.config.network.slug;
 
-    if (SolanaConfig.config.customRpcUrl == undefined) {
+    if (NearConfig.config.customRpcUrl == undefined) {
       switch (this._cluster) {
         case 'mainnet-beta':
           this.rpcUrl = 'https://api.mainnet-beta.solana.com';
@@ -71,17 +71,17 @@ export class Near {
           throw new Error('SOLANA_CHAIN not valid');
       }
     } else {
-      this.rpcUrl = SolanaConfig.config.customRpcUrl;
+      this.rpcUrl = NearConfig.config.customRpcUrl;
     }
 
     this._connection = new Connection(this.rpcUrl, 'processed' as Commitment);
     this.cache = new NodeCache({ stdTTL: 3600 }); // set default cache ttl to 1hr
 
     this._nativeTokenSymbol = 'SOL';
-    this._tokenProgramAddress = new PublicKey(SolanaConfig.config.tokenProgram);
+    this._tokenProgramAddress = new PublicKey(NearConfig.config.tokenProgram);
 
-    this.transactionLamports = SolanaConfig.config.transactionLamports;
-    this._lamportPrice = SolanaConfig.config.lamportsToSol;
+    this.transactionLamports = NearConfig.config.transactionLamports;
+    this._lamportPrice = NearConfig.config.lamportsToSol;
     this._lamportDecimals = countDecimals(this._lamportPrice);
 
     this._requestCount = 0;

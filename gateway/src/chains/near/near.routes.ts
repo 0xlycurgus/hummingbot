@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { NextFunction, Router, Request, Response } from 'express';
 import { Near } from './near';
-import { SolanaConfig } from './near.config';
+import { NearConfig } from './near.config';
 import { verifySolanaIsAvailable } from './near-middlewares';
 import { asyncHandler } from '../../services/error-handler';
 import {
@@ -40,7 +40,7 @@ export namespace NearRoutes {
       const rpcUrl = solana.rpcUrl;
 
       res.status(200).json({
-        network: SolanaConfig.config.network.slug,
+        network: NearConfig.config.network.slug,
         rpcUrl: rpcUrl,
         connection: true,
         timestamp: Date.now(),

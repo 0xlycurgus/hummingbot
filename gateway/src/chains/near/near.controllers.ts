@@ -8,7 +8,7 @@ import {
   SolanaTokenRequest,
   SolanaTokenResponse,
 } from './near.requests';
-import { Solanaish } from './near';
+import { Nearish } from './near';
 import { PublicKey } from '@solana/web3.js';
 import {
   HttpException,
@@ -17,7 +17,7 @@ import {
 } from '../../services/error-handler';
 
 export async function balances(
-  solanaish: Solanaish,
+  solanaish: Nearish,
   req: SolanaBalanceRequest
 ): Promise<SolanaBalanceResponse | string> {
   const initTime = Date.now();
@@ -57,7 +57,7 @@ const toSolanaBalances = (
 };
 
 export async function poll(
-  solanaish: Solanaish,
+  solanaish: Nearish,
   req: SolanaPollRequest
 ): Promise<SolanaPollResponse> {
   const initTime = Date.now();
@@ -76,7 +76,7 @@ export async function poll(
 }
 
 export async function token(
-  solanaish: Solanaish,
+  solanaish: Nearish,
   req: SolanaTokenRequest
 ): Promise<SolanaTokenResponse> {
   const initTime = Date.now();
@@ -113,7 +113,7 @@ export async function token(
 }
 
 export async function getOrCreateTokenAccount(
-  solanaish: Solanaish,
+  solanaish: Nearish,
   req: SolanaTokenRequest
 ): Promise<SolanaTokenResponse> {
   const initTime = Date.now();
