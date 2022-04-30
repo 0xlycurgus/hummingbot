@@ -25,6 +25,8 @@ tags:
     description: 'Interact with EVM based blockchains'
   - name: 'solana'
     description: 'Interact with the Solana blockchain'
+  - name: 'near'
+    description: 'Interact with the Near blockchain'
 
 schemes:
   - 'http'

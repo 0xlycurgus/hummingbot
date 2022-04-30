@@ -1,0 +1,97 @@
+paths:
+  /near:
+    get:
+      tags:
+        - 'near'
+      summary: 'View the Near network and RPC URL that gateway is configured to use'
+      description: 'The user can change this by editing src/chains/solana/near.config.ts'
+      operationId: 'root'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'Near config'
+          schema:
+            $ref: '#/definitions/SolanaConfigResponse'
+
+  /near/balances:
+    post:
+      tags:
+        - 'near'
+      summary: 'Get the balances of an Near private key'
+      operationId: 'balances'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          required: true
+          schema:
+            $ref: '#/definitions/SolanaBalancesRequest'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SolanaBalancesResponse'
+
+  /near/token:
+    get:
+      tags:
+        - 'near'
+      summary: 'Request token information and balance of requested token symbol'
+      operationId: 'token'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          required: true
+          schema:
+            $ref: '#/definitions/SolanaTokenRequest'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SolanaTokenResponse'
+    post:
+      tags:
+        - 'near'
+      summary: 'Get or create an associated token account for given token symbol. NOTE: This request costs 0.035 SOL, if no associated token account for given wallet address existed so far'
+      operationId: 'token'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          required: true
+          schema:
+            $ref: '#/definitions/SolanaTokenRequest'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SolanaTokenResponse'
+
+  /near/poll:
+    post:
+      tags:
+        - 'near'
+      summary: 'Poll the status of a Near transaction'
+      operationId: 'poll'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          required: true
+          schema:
+            $ref: '#/definitions/SolanaPollRequest'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/SolanaPollResponse'
