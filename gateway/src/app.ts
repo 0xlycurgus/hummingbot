@@ -21,8 +21,12 @@ import { PangolinConfig } from './connectors/pangolin/pangolin.config';
 import { UniswapConfig } from './connectors/uniswap/uniswap.config';
 import { AvailableNetworks } from './services/config-manager-types';
 import morgan from 'morgan';
+import {ClobRoutes} from "./clob/clob.routes";
+import {SerumRoutes} from "./connectors/serum/serum.routes";
 
 const swaggerUi = require('swagger-ui-express');
+
+const childProcess = require('child_process');
 
 export const gatewayApp = express();
 
@@ -41,8 +45,10 @@ gatewayApp.use('/evm', EVMRoutes.router);
 gatewayApp.use('/connectors', ConnectorsRoutes.router);
 
 gatewayApp.use('/amm', AmmRoutes.router);
+gatewayApp.use('/clob', ClobRoutes.router);
 gatewayApp.use('/wallet', WalletRoutes.router);
 gatewayApp.use('/solana', SolanaRoutes.router);
+gatewayApp.use('/serum', SerumRoutes.router);
 
 // a simple route to test that the server is running
 gatewayApp.get('/', (_req: Request, res: Response) => {
@@ -68,6 +74,16 @@ interface ConfigUpdateRequest {
   configPath: string;
   configValue: any;
 }
+
+// watch the exit even, spawn an independent process with the same args and
+// pass the stdio from this process to it.
+process.on('exit', function () {
+  childProcess.spawn(process.argv.shift(), process.argv, {
+    cwd: process.cwd(),
+    detached: true,
+    stdio: 'inherit',
+  });
+});
 
 gatewayApp.post(
   '/config/update',
@@ -95,6 +111,16 @@ gatewayApp.post(
       res.status(200).json({ message: 'The config has been updated' });
     }
   )
+);
+
+gatewayApp.post(
+  '/restart',
+  asyncHandler(async (_req, res) => {
+    // kill the current process and trigger the exit event
+    process.exit();
+    // this is only to satisfy the compiler, it will never be called.
+    res.status(200).json();
+  })
 );
 
 // handle any error thrown in the gateway api route

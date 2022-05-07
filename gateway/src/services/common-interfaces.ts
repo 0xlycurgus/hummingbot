@@ -82,7 +82,8 @@ export interface Uniswapish {
   estimateSellTrade(
     baseToken: Tokenish,
     quoteToken: Tokenish,
-    amount: BigNumber
+    amount: BigNumber,
+    allowedSlippage?: string
   ): Promise<ExpectedTrade>;
 
   /**
@@ -98,7 +99,8 @@ export interface Uniswapish {
   estimateBuyTrade(
     quoteToken: Tokenish,
     baseToken: Tokenish,
-    amount: BigNumber
+    amount: BigNumber,
+    allowedSlippage?: string
   ): Promise<ExpectedTrade>;
 
   /**
@@ -125,7 +127,8 @@ export interface Uniswapish {
     gasLimit: number,
     nonce?: number,
     maxFeePerGas?: BigNumber,
-    maxPriorityFeePerGas?: BigNumber
+    maxPriorityFeePerGas?: BigNumber,
+    allowedSlippage?: string
   ): Promise<Transaction>;
 }
 
@@ -142,9 +145,23 @@ export interface Ethereumish extends EthereumBase {
 }
 
 export interface NetworkSelectionRequest {
-  connector?: string; //the target connector (e.g. uniswap or pangolin)
   chain: string; //the target chain (e.g. ethereum, avalanche, or harmony)
   network: string; // the target network of the chain (e.g. mainnet)
+  connector?: string; //the target connector (e.g. uniswap or pangolin)
+}
+
+export class ResponseWrapper<T> {
+  get status(): number {
+    return this._status || -1;
+  }
+  set status(value: number) {
+    this._status = value;
+  }
+  private _status: number | undefined;
+
+  title?: string;
+  message?: string;
+  body?: T;
 }
 
 export interface CustomTransactionReceipt
